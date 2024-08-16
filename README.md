@@ -1,16 +1,56 @@
-# task_management_app
+# Task Management App
 
-A new Flutter project.
+A Flutter application for managing tasks, built with Flutter Bloc and Sqflite for state management and local storage.
 
-## Getting Started
+## ✨ Features
 
-This project is a starting point for a Flutter application.
+- **Add Tasks**: Create new tasks with a title and description.
+- **Update Tasks**: Modify existing task details.
+- **Delete Tasks**: Remove tasks from the list.
+- **Toggle Task Completion**: Mark tasks as complete or incomplete.
+- **Search Tasks**: Filter tasks by title or description.
+- **Persistent Storage**: Tasks are saved locally using Sqflite.
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Installation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/task_management_app.git
+   cd task_management_app
+   ```
+2. Install dependencies:
+   ```bash
+   flutter pub get
+   dart run build_runner build
+   ```
+3. Run the app:
+   ```bash
+   flutter run
+   ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠️ Usage
+
+### Adding a Task
+
+1. Tap the Add button (➕).
+2. Enter the task title and description.
+3. Tap Save.
+
+### Updating a Task
+
+1. Tap on a task to open its details.
+2. Edit the title or description.
+3. Tap Save.
+
+### Deleting a Task
+
+1. Tap on a task to open its details.
+2. Tap Delete (❌).
+
+### Toggling Task Completion
+
+1. Tap the check button (✅) next to the task.
+
+### Searching Tasks
+
+1. Enter a keyword in the search bar to filter tasks.
