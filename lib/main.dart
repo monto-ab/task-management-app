@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
 
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.blue[200],
+    primaryColor: Colors.blue[100],
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.blue[200],
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Colors.blue[300],
+      backgroundColor: Colors.blue[500],
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

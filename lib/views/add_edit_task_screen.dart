@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:task_management_app/bloc/task_block.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/controllers/add_edit_task_controller.dart';
+import 'package:task_management_app/utils/common_function.dart';
 
 @immutable
 class AddEditTaskScreen extends StatelessWidget {
@@ -10,10 +11,31 @@ class AddEditTaskScreen extends StatelessWidget {
 
   final AddEditTaskController controller = Get.put(AddEditTaskController());
 
+  void _openDatePicker() async {
+    final DateTime? picked = await showDatePicker(
+      context: Get.context!,
+      initialDate: controller.task?.date != null
+          ? DateTime.fromMillisecondsSinceEpoch(controller.task!.date!)
+          : null,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 10)),
+    );
+
+    if (picked != null) {
+      controller.dateInMillis.value = picked.millisecondsSinceEpoch;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: _openDatePicker,
+            icon: const Icon(Icons.access_time_rounded),
+          ),
+        ],
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: TextField(
@@ -43,6 +65,14 @@ class AddEditTaskScreen extends StatelessWidget {
                   hintText: "Enter Task Description",
                 ),
               ),
+            ),
+            Obx(
+              () => controller.dateInMillis.value == null
+                  ? const SizedBox()
+                  : Text(
+                      "Due Date: ${CommonFunction.getFormattedDateFromTimeInMillis(controller.dateInMillis.value)}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
             ),
             const SizedBox(height: 45),
           ],

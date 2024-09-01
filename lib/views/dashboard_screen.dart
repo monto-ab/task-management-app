@@ -1,9 +1,11 @@
 import 'package:accordion/accordion.dart';
+import 'package:accordion/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:task_management_app/bloc/task_block.dart';
 import 'package:task_management_app/models/task.dart';
+import 'package:task_management_app/utils/common_function.dart';
 import 'package:task_management_app/views/add_edit_task_screen.dart';
 
 @immutable
@@ -52,6 +54,15 @@ class DashboardScreen extends StatelessWidget {
               task.description,
               style: const TextStyle(fontSize: 16),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  CommonFunction.getFormattedDateFromTimeInMillis(task.date),
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -96,16 +107,24 @@ class DashboardScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (value) {
-                context.read<TaskBloc>().setSearch(value);
-              },
-              decoration: const InputDecoration(
-                hintText: "Search",
-                prefixIcon: Icon(Icons.search),
-              ),
+          TextField(
+            controller: context.read<TaskBloc>().searchController,
+            onChanged: (value) {
+              context.read<TaskBloc>().filterList();
+            },
+            decoration: InputDecoration(
+              hintText: "Search",
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon:
+                  context.read<TaskBloc>().searchController.text.trim() == ''
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            context.read<TaskBloc>().searchController.clear();
+                            context.read<TaskBloc>().filterList();
+                          },
+                        ),
             ),
           ),
           listOfTasks.isEmpty
@@ -113,8 +132,9 @@ class DashboardScreen extends StatelessWidget {
               : Expanded(
                   child: Accordion(
                       scaleWhenAnimating: true,
+                      scrollIntoViewOfItems: ScrollIntoViewOfItems.fast,
                       paddingListTop: 5,
-                      paddingListBottom: 5,
+                      paddingListBottom: 75,
                       children: listOfTasks
                           .map((task) => getTile(context: context, task: task))
                           .toList()),

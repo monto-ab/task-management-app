@@ -11,6 +11,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       title: json['title'] as String,
       description: json['description'] as String,
       isCompleted: Task._intToBool((json['isCompleted'] as num).toInt()),
+      date: (json['date'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'isCompleted': Task._boolToInt(instance.isCompleted),
+      'date': instance.date,
     };

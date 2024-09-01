@@ -11,12 +11,14 @@ class Task {
   final String description;
   @JsonKey(name: "isCompleted", fromJson: _intToBool, toJson: _boolToInt)
   final bool isCompleted;
+  final int? date;
 
   const Task({
     required this.id,
     required this.title,
     required this.description,
     required this.isCompleted,
+    required this.date,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
@@ -31,12 +33,14 @@ class Task {
     String? title,
     String? description,
     bool? isCompleted,
+    int? date,
   }) {
     return Task(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       isCompleted: isCompleted ?? this.isCompleted,
+      date: date ?? this.date,
     );
   }
 }

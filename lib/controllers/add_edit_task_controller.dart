@@ -9,6 +9,7 @@ class AddEditTaskController extends GetxController {
 
   late TextEditingController titleController;
   late TextEditingController descriptionController;
+  Rx dateInMillis = Rx(null);
 
   @override
   void onInit() {
@@ -18,6 +19,7 @@ class AddEditTaskController extends GetxController {
     if (task != null) {
       titleController.text = task!.title;
       descriptionController.text = task!.description;
+      dateInMillis = Rx(task!.date);
     }
   }
 
@@ -25,6 +27,7 @@ class AddEditTaskController extends GetxController {
   void onClose() {
     titleController.dispose();
     descriptionController.dispose();
+    dateInMillis.close();
     super.onClose();
   }
 
@@ -33,13 +36,15 @@ class AddEditTaskController extends GetxController {
       Get.context!.read<TaskBloc>().addTask(
             title: titleController.text,
             description: descriptionController.text,
+            dateInMillis: dateInMillis.value,
           );
     } else {
       Get.context!.read<TaskBloc>().updateTask(Task(
           id: task!.id,
           title: titleController.text,
           description: descriptionController.text,
-          isCompleted: task!.isCompleted));
+          isCompleted: task!.isCompleted,
+          date: dateInMillis.value));
     }
 
     Get.back();

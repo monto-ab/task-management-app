@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/bloc/task_state.dart';
 import 'package:task_management_app/models/task.dart';
@@ -6,7 +7,8 @@ import 'package:task_management_app/repository/task_repository.dart';
 class TaskBloc extends Cubit<TaskState> {
   final TaskRepository _taskRepository;
   List<Task> _listOfTasks = [];
-  String value = '';
+
+  final TextEditingController searchController = TextEditingController();
 
   TaskBloc(this._taskRepository) : super(TaskState(listOfTasks: [])) {
     _fetchListOfTasks();
@@ -31,9 +33,12 @@ class TaskBloc extends Cubit<TaskState> {
   }
 
   Future<void> addTask(
-      {required String title, required String description}) async {
+      {required String title,
+      required String description,
+      int? dateInMillis}) async {
     // insert the task into the database
-    await _taskRepository.insertTask(title: title, description: description);
+    await _taskRepository.insertTask(
+        title: title, description: description, dateInMillis: dateInMillis);
 
     _fetchListOfTasks();
   }
@@ -60,14 +65,14 @@ class TaskBloc extends Cubit<TaskState> {
     state.openedTask = task;
   }
 
-  void setSearch(String value) {
-    this.value = value.trim();
+  void filterList() {
     emit(TaskState(
         listOfTasks: _getListOfTasks(), openedTask: state.openedTask));
   }
 
   List<Task> _getListOfTasks() {
-    if (value.trim().isNotEmpty) {
+    String value = searchController.text.trim();
+    if (value.isNotEmpty) {
       // filter the tasks based on the value
       final List<Task> tasks = _listOfTasks
           .where((task) =>
